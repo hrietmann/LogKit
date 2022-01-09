@@ -1,29 +1,29 @@
 import Foundation
+import Darwin
 
 
 
 public struct LogKit {
     
     
-//    @available(iOS 15.0, macOS 12, *)
-//    public static var memoryGBUsage: Double {
-//        let TASK_VM_INFO_COUNT = mach_msg_type_number_t(MemoryLayout<task_vm_info_data_t>.size / MemoryLayout<integer_t>.size)
-//        let TASK_VM_INFO_REV1_COUNT = mach_msg_type_number_t(MemoryLayout.offset(of: \task_vm_info_data_t.min_address)! / MemoryLayout<integer_t>.size)
-//        var info = task_vm_info_data_t()
-//        var count = TASK_VM_INFO_COUNT
-//        let kr = withUnsafeMutablePointer(to: &info) { infoPtr in
-//            infoPtr.withMemoryRebound(to: integer_t.self, capacity: Int(count)) { intPtr in
-//                task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), intPtr, &count)
-//            }
-//        }
-//        let usedBytes: UInt64
-//        if kr == KERN_SUCCESS, count >= TASK_VM_INFO_REV1_COUNT
-//        { usedBytes = info.phys_footprint }
-//        else { usedBytes = 0 }
-//        
-//        let usedGB = Double(usedBytes) / 1024 / 1024 / 1024
-//        return usedGB
-//    }
+    public static var memoryGBUsage: Double {
+        let TASK_VM_INFO_COUNT = mach_msg_type_number_t(MemoryLayout<task_vm_info_data_t>.size / MemoryLayout<integer_t>.size)
+        let TASK_VM_INFO_REV1_COUNT = mach_msg_type_number_t(MemoryLayout.offset(of: \task_vm_info_data_t.min_address)! / MemoryLayout<integer_t>.size)
+        var info = task_vm_info_data_t()
+        var count = TASK_VM_INFO_COUNT
+        let kr = withUnsafeMutablePointer(to: &info) { infoPtr in
+            infoPtr.withMemoryRebound(to: integer_t.self, capacity: Int(count)) { intPtr in
+                task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), intPtr, &count)
+            }
+        }
+        let usedBytes: UInt64
+        if kr == KERN_SUCCESS, count >= TASK_VM_INFO_REV1_COUNT
+        { usedBytes = info.phys_footprint }
+        else { usedBytes = 0 }
+        
+        let usedGB = Double(usedBytes) / 1024 / 1024 / 1024
+        return usedGB
+    }
     
     
     public static func log(level: LogIndentation,
