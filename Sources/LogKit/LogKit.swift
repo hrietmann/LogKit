@@ -1,11 +1,13 @@
 import Foundation
+#if canImport(Darwin)
 import Darwin
+#endif
 
 
 
 public struct LogKit {
     
-    
+    #if canImport(Darwin)
     public static var memoryGBUsage: Double {
         let TASK_VM_INFO_COUNT = mach_msg_type_number_t(MemoryLayout<task_vm_info_data_t>.size / MemoryLayout<integer_t>.size)
         let TASK_VM_INFO_REV1_COUNT = mach_msg_type_number_t(MemoryLayout.offset(of: \task_vm_info_data_t.min_address)! / MemoryLayout<integer_t>.size)
@@ -24,6 +26,7 @@ public struct LogKit {
         let usedGB = Double(usedBytes) / 1024 / 1024 / 1024
         return usedGB
     }
+    #endif
     
     
     public static func log(level: LogIndentation,
